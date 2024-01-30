@@ -14,3 +14,4 @@ typedef struct stu Stu;
 extern Stu * first;
 extern Stu * head;
 extern int cnt;
+extern int fileCnt;
