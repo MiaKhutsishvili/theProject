@@ -4,7 +4,8 @@
 void fileWrite ()
 {
     FILE * fptr = fopen ("data.txt", "w");
-    Stu * current;
+    Stu * current = first;
+    fileCnt = cnt;
     for (int i = 0; i < cnt; i++)
     {
         fprintf (fptr, "Name: %s\t\t", current -> name);
