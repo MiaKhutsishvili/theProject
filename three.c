@@ -15,13 +15,15 @@ void addStu (int row, Stu * input)
     if (row <= 1)
     {
         newStu -> next = first;
-        first -> prev = newStu;
+        if (first != NULL)
+            first -> prev = newStu;
         first = newStu;
+        newStu -> prev = NULL;
     }
     else
     {
         Stu * current = first;
-        for (int i = 0; i < row - 1 && current -> next != NULL; i++)
+        for (int i = 0; i < row - 2 && i < cnt - 1; i++)
             current = current -> next;
         newStu -> prev = current;
         newStu -> next = current -> next;
@@ -31,5 +33,8 @@ void addStu (int row, Stu * input)
     }
 
     cnt++;
+    head = first;
+    for (int i = 0; i < cnt - 1; i++)
+        head = head -> next;
     return;
 }
