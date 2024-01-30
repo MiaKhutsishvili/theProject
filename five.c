@@ -8,13 +8,13 @@
 void dfs (int);
 Stu cash;
 Stu cash1;
-bool check[100000];
-int order[100000];
-Stu * address[100000];
+bool check[1000];
+int order[1000];
+Stu * address[1000];
 
 void shuffle ()
 {
-    for (int i = 0; i < 1000000; i++)
+    for (int i = 0; i < 1000; i++)
         check[i] = 0;
     srand (time (NULL));
     for (int i = 0; i < cnt; i++)
@@ -32,7 +32,7 @@ void shuffle ()
         address[i] = current;
         current = current -> next;
     }
-    for (int i = 0; i < 1000000; i++)
+    for (int i = 0; i < 1000; i++)
         check[i] = 0;
     for (int i = 0; i < cnt; i++)
     {
