@@ -7,7 +7,7 @@ void swap (Stu *, Stu *);
 
 void selectionSort (bool mode)
 {
-    Stu * address[100000];
+    Stu * address[1000];
     Stu * current = first;
     for (int i = 0; i < cnt; i++)
     {
@@ -45,7 +45,7 @@ void selectionSort (bool mode)
 
 void insertionSort (bool mode)
 {
-    Stu * address[100000];
+    Stu * address[1000];
     Stu * current = first;
     for (int i = 0; i < cnt; i++)
     {
@@ -95,7 +95,7 @@ void insertionSort (bool mode)
 
 void bubbleSort (bool mode)
 {
-    Stu * address[100000];
+    Stu * address[1000];
     Stu * current = first;
     for (int i = 0; i < cnt; i++)
     {
