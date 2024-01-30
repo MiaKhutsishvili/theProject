@@ -7,6 +7,7 @@
 typedef struct stu Stu;
 
 int cnt;
+int choice;
 Stu * first = NULL;
 Stu * head = NULL;
 
@@ -29,7 +30,44 @@ void display (Stu *);
 
 int main()
 {
-
+    bool firstOne = 0;
+    switch (choice)
+    {
+        case 1:
+            if (!firstOne)
+            {
+                FILE * fptr = fopen ("data.txt", "r");
+                for (int i = 0; i < 100; i++)
+                {
+                    Stu  newStu;
+                    fscanf (fptr, "%s", newStu.name);
+                    fscanf (fptr, "%s", newStu.lastName);
+                    fscanf (fptr, "%s", newStu.ID);
+                    fscanf (fptr, "%s", newStu.city);
+                    stuAdd (i + 1, &newStu);
+                }
+                fclose (fptr);
+                firstOne = 1;
+            }
+            else
+            {
+                Stu  newStu;
+                int row;
+                printf ("Enter name: ");
+                scanf ("%s", newStu.name);
+                printf ("Enter last name: ");
+                scanf ("%s", newStu.lastName);
+                printf ("Enter ID: ");
+                scanf ("%s", newStu.ID);
+                printf ("Enter city: ");
+                scanf ("%s", newStu.city);
+                printf ("Enter row: ");
+                scanf ("%d", &row);
+                stuAdd (row, &newStu);
+            }
+            break;
+        
+    }
     return 0;
 }
 
