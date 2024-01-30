@@ -1,0 +1,153 @@
+#include <stdio.h>
+#include <stdbool.h> 
+#include <SDL2/SDL.h> 
+#include <SDL2/SDL_ttf.h> //for fonts
+#define WIDTH 600
+#define HEIGHT 800
+#define FPS 50
+int main(int argc, char* argv[])
+{ 
+    SDL_Rect buttons[8]; //menu items
+    for (int i = 0; i < 8; i++) {
+        buttons[i].x = 50;
+        buttons[i].y = 50 + i * 80; //move to the next row
+        buttons[i].w = 150;
+        buttons[i].h = 50;
+    }
+    if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
+    {
+        printf("Error initializing SDL: %s\n", SDL_GetError());
+        return 0;
+    }
+
+    SDL_Window* window = SDL_CreateWindow("The menu", //window creating
+                                      SDL_WINDOWPOS_CENTERED,
+                                      SDL_WINDOWPOS_CENTERED,
+                                      WIDTH, HEIGHT, 0);
+    if (!window)
+    {
+        printf("Error creating window: %s\n", SDL_GetError()); 
+        SDL_DestroyWindow(window); 
+        SDL_Quit(); 
+        return 0;
+    }
+    Uint32 render_flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC; //render creating
+    SDL_Renderer* render = SDL_CreateRenderer(window, -1, render_flags);
+    if (!render)
+    {
+        printf("Error creating renderer: %s\n", SDL_GetError());
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return 0;
+    }
+    TTF_Init();
+    TTF_Font* font = TTF_OpenFont("C:\\Users\\user\\Desktop\\COLORBOX\\Oswald.ttf.ttf", 18); //font initializing
+    if (!font)
+    {
+        printf("Error loading font: %s\n", TTF_GetError());
+        TTF_Quit();
+        SDL_DestroyRenderer(render);
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return 0;
+    }
+    const char* Texts[] = {
+        "Start",
+        "Search",
+        "Add student",
+        "Remove student",
+        "shuffle",
+        "Sort",
+        "Write",
+        "Exit"
+    };
+    SDL_Event event;
+    bool run = true;
+    int s = -1; // no selected
+
+    while (run)
+    {
+        while (SDL_PollEvent(&event))
+        {
+            if (event.type == SDL_QUIT)
+                run = false;
+
+            else if (event.type == SDL_MOUSEBUTTONDOWN)
+            {
+                int mouseX, mouseY;
+                SDL_GetMouseState(&mouseX, &mouseY);
+                for (int i = 0; i < 8; i++)
+                    if (mouseX >= buttons[i].x && mouseX <= buttons[i].x + buttons[i].w && //check if mouse is inside button
+                        mouseY >= buttons[i].y && mouseY <= buttons[i].y + buttons[i].h)
+                    {
+                        s = i;
+                        break;
+                    }
+                     switch (s)
+        {
+            case 0:
+                printf("Start\n");  
+                break; 
+            case 1: 
+                printf("Search\n");
+                break; 
+            case 2: 
+                printf("Add student\n");
+                break; 
+            case 3: 
+                printf("Remove student\n");
+                break; 
+            case 4: 
+                printf("shuffle\n");
+                break; 
+            case 5: 
+                printf("Sort\n");
+                break; 
+            case 6: 
+                printf("Write\n");
+                break;  
+            case 7:
+                printf("Exit\n");
+                run=false;
+                break; 
+        }    
+            }
+        }
+        SDL_SetRenderDrawColor(render, 0, 0, 0 , 0); // black color
+        SDL_RenderClear(render);
+        for (int i = 0; i < 8; i++)
+        {
+            if (i == s)
+                SDL_SetRenderDrawColor(render, 0, 255, 0, 255); // selected = green
+            else
+                SDL_SetRenderDrawColor(render, 255, 0, 255, 0); // other = pink
+
+            SDL_RenderFillRect(render, &buttons[i]);
+            SDL_RenderFillRect(render, &buttons[i]);
+
+            // Render text on the menu item
+            SDL_Color textColor = { 0, 0, 0, 255 }; // Black color
+            SDL_Surface* textSurface = TTF_RenderText_Solid(font, Texts[i], textColor);
+            SDL_Texture* textTexture = SDL_CreateTextureFromSurface(render, textSurface);
+            SDL_Rect textRect = 
+            {
+                buttons[i].x + (buttons[i].w - textSurface->w) / 2,
+                buttons[i].y + (buttons[i].h - textSurface->h) / 2,
+                textSurface->w,
+                textSurface->h
+            };
+            SDL_RenderCopy(render, textTexture, NULL, &textRect);
+            SDL_FreeSurface(textSurface);
+            SDL_DestroyTexture(textTexture);
+        }
+        SDL_RenderPresent(render);
+        SDL_Delay(1000 / FPS);
+    }
+    
+    SDL_DestroyRenderer(render);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+    return 0;
+}
+
+
