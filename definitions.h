@@ -15,3 +15,4 @@ extern Stu * first;
 extern Stu * head;
 extern int cnt;
 extern int fileCnt;
+extern Stu * address[1000];
