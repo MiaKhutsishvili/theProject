@@ -9,9 +9,9 @@ void removeStu (Stu * stu)
         stu -> prev -> next = stu -> next;
     if (stu != head)
         stu -> next -> prev = stu -> prev;
+    cnt--;
     if (stu == first)
         first = first -> next;
-    cnt--;
     Stu * current = first;
     for (int i = 0; i < cnt - 1; i++)
         current = current -> next;
