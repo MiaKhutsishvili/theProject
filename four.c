@@ -9,7 +9,6 @@ void removeStu (Stu * stu)
         stu -> prev -> next = stu -> next;
     if (stu != head)
         stu -> next -> prev = stu -> prev;
-    //In car
     if (stu == first)
         first = first -> next;
     cnt--;
