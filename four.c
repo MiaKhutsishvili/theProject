@@ -16,7 +16,6 @@ void removeStu (Stu * stu)
     for (int i = 0; i < cnt - 1; i++)
         current = current -> next;
     head = current;
-    //
     free (stu);
     return;
 }
