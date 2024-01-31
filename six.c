@@ -1,193 +1,111 @@
 #include <stdio.h>
-#include <stdbool.h>
 #include <string.h>
 #include "definitions.h"
 
-void swap (Stu *, Stu *);
+Stu * address[1000];
 
-void selectionSort (bool mode)
+Stu * compare (Stu *, Stu *, int);
+
+
+void selectionSort (int mode)
 {
-    Stu * address[1000];
-    Stu * current = first;
-    for (int i = 0; i < cnt; i++)
-    {
-        address[i] = current;
-        current = current -> next;
-    }
-
-    for (int i = 0; i < cnt; i++)
-    {
-        Stu * min = address[i];
-        for (int j = i + 1; j < cnt; j++)
+    for (int i = 1; i <= cnt; i++)
+        for (int j = i + 1; j <= cnt; j++)
         {
-            if (mode)
-            {
-                if (strcmp (min -> lastName, address[j] -> lastName) > 0)
-                    swap (min, address[j]);
-
-                if (!strcmp (min -> lastName, address[j] -> lastName) && 
-                    strcmp (min -> name, address[j] -> name) > 0)
-                    swap (min, address[j]);
-            }
-            else
-            {
-                if (strcmp (min -> lastName, address[j] -> lastName) < 0)
-                    swap (min, address[j]);
-
-                if (!strcmp (min -> lastName, address[j] -> lastName) && 
-                    strcmp (min -> name, address[j] -> name) < 0)
-                    swap (min, address[j]);
-            }
+            Stu * stu =  compare (address[i], address[j], mode);
+            address[j] = compare (address[i], address[j], (mode + 1) % 2);
+            address[i] = stu;
         }
-    }
     return;
 }
 
-void insertionSort (bool mode)
+void insertionSort (int mode)
 {
-    Stu * address[1000];
-    Stu * current = first;
-    for (int i = 0; i < cnt; i++)
-    {
-        address[i] = current;
-        current = current -> next;
-    }
-
-    for (int i = 0; i < cnt; i++)
-    {
-        current = address[i];
-        for (int j = i - 1; j >= 0; j--)
+    for (int i = 1; i <= cnt; i++)
+        for (int j = i - 1; j > 0; j--)
         {
-            if (mode)
-            {
-                if (strcmp (current -> lastName, address[j] -> lastName) < 0)
-                    swap (current, address[j]);
-                else if ((current -> lastName, address[j] -> lastName) > 0)
-                    break;
-                else
-                {
-                    if (!strcmp (current -> lastName, address[j] -> lastName) && 
-                        strcmp (current -> name, address[j] -> name) < 0)
-                        swap (current, address[j]);
-                    else
-                        break;
-                }
-            }
-            else
-            {
-                if (strcmp (current -> lastName, address[j] -> lastName) > 0)
-                    swap (current, address[j]);
-                else if ((current -> lastName, address[j] -> lastName) < 0)
-                    break;
-                else
-                {
-                    if (!strcmp (current -> lastName, address[j] -> lastName) && 
-                        strcmp (current -> name, address[j] -> name) > 0)
-                        swap (current, address[j]);
-                    else
-                        break;
-                }
-            }
+            Stu * stu =  compare (address[j + 1], address[j], mode);
+            address[j + 1] = compare (address[j + 1], address[j], (mode + 1) % 2);
+            address[j] = stu;
         }
-    }
     return;
 }
 
-void bubbleSort (bool mode)
+void bubbleSort (int mode)
 {
-    Stu * address[1000];
-    Stu * current = first;
-    for (int i = 0; i < cnt; i++)
-    {
-        address[i] = current;
-        current = current -> next;
-    }
-
-    for (int i = 0; i < cnt; i++)
-    {
-        for (int j = 1; j < cnt; j++)
+    for (int i = 1; i <= cnt; i++)
+        for (int j = 1; j <= cnt - i; j++)
         {
-            if (mode)
-            {
-                if (strcmp (address[j - 1] -> lastName, address[j] -> lastName) > 0)
-                    swap (address[j - 1], address[j]);
-
-                if (!strcmp (address[j - 1] -> lastName, address[j] -> lastName) && 
-                    strcmp (address[j - 1] -> name, address[j] -> name) > 0)
-                    swap (address[j - 1], address[j]);
-            }
-            else
-            {
-                if (strcmp (address[j - 1] -> lastName, address[j] -> lastName) < 0)
-                    swap (address[j - 1], address[j]);
-
-                if (!strcmp (address[j - 1] -> lastName, address[j] -> lastName) && 
-                    strcmp (address[j - 1] -> name, address[j] -> name) < 0)
-                    swap (address[j - 1], address[j]);
-            }
+            Stu * stu =  compare (address[j + 1], address[j], mode);
+            address[j + 1] = compare (address[j + 1], address[j], (mode + 1) % 2);
+            address[j] = stu;
         }
-    }
     return;
 }
 
-void quickSort (bool mode, Stu * start, Stu * end)
+void quickSort (int mode, int start, int end)
 {
-    if (start == end)
+    if (end - start < 1)
         return;
-    Stu * pivot = end;
-    Stu * left = start;
-    Stu * right = end;
+    Stu * pivot = address[end];
+    int left = start; 
+    int right = end - 1;
     while (left != right)
     {
-        if (mode)
-        {
-            while (left != right &&
-                (strcmp (right -> lastName, pivot -> lastName) <= 0 ||
-                (!strcmp (right -> lastName, pivot -> lastName)  && strcmp (right -> name, pivot -> name)) <= 0) )
-                    right = right -> prev;
-            while (left != right && 
-                (strcmp (right -> lastName, pivot -> lastName) > 0 ||
-                (!strcmp (right -> lastName, pivot -> lastName)  && strcmp (right -> name, pivot -> name)) > 0) )
-                    left = left -> next;
-        }
-        else
-        {
-            while (left != right &&
-                (strcmp (right -> lastName, pivot -> lastName) > 0 ||
-                (!strcmp (right -> lastName, pivot -> lastName)  && strcmp (right -> name, pivot -> name)) > 0) )
-                    right = right -> prev;
-            while (left != right && 
-                (strcmp (right -> lastName, pivot -> lastName) <= 0 ||
-                (!strcmp (right -> lastName, pivot -> lastName)  && strcmp (right -> name, pivot -> name)) <= 0) )
-                    left = left -> next;
-        }
-        swap (left, right);
+        while (compare (address[left], pivot, mode) != pivot && left < right)
+            left++;
+        while (compare (address[left], pivot, mode) == pivot && right > left)
+            right--;
+        Stu * stu = address[left];
+        address[left] = address[right];
+        address[right] = stu; 
     }
-    Stu * current = start;
-    while (strcmp (current -> ID, pivot -> ID))
-        current = current -> next;
-    quickSort (mode, start, current);
-    quickSort (mode, current, end);
+    int mid = end;
+    while (mid > start && compare (address[mid], address[mid - 1], mode) == address[mid])
+    {
+        pivot = address[mid];
+        address[mid] = address[mid - 1];
+        address[mid - 1] = pivot; 
+        mid--;
+    }   
+    quickSort (mode, start, mid - 1);
+    quickSort (mode, mid + 1, end);
     return;
 }
 
-void swap (Stu * A, Stu * B)
+Stu * compare (Stu * A, Stu * B, int mode)
 {
-    Stu cash;
-    strcpy (cash.name, A -> name);
-    strcpy (cash.lastName, A -> lastName);
-    strcpy (cash.ID, A -> ID);
-    strcpy (cash.city, A -> city);
-
-    strcpy (A -> name, B -> name);
-    strcpy (A -> lastName, B -> lastName);
-    strcpy (A -> ID, B -> ID);
-    strcpy (A -> city, B -> city);
-
-    strcpy (B -> name, cash.name);
-    strcpy (B -> lastName, cash.lastName);
-    strcpy (B -> ID, cash.ID);
-    strcpy (B -> city, cash.city);
-
-    return;
+    if (mode)
+    {
+        // Finding min
+        if (strcmp (A -> lastName, B -> lastName) < 0)
+            return A;
+        else if (strcmp (A -> lastName, B -> lastName) > 0)
+            return B;
+        if (strcmp (A -> name, B -> name) < 0)
+            return A;
+        else if (strcmp (A -> name, B -> name) > 0)
+            return B;
+        if (strcmp (A -> ID, B -> ID) < 0)
+            return A;
+        else if (strcmp (A -> ID, B -> ID) > 0)
+            return B;
+    }
+    else
+    {
+        // Finding max
+        if (strcmp (A -> lastName, B -> lastName) > 0)
+            return A;
+        else if (strcmp (A -> lastName, B -> lastName) < 0)
+            return B;
+        if (strcmp (A -> name, B -> name) > 0)
+            return A;
+        else if (strcmp (A -> name, B -> name) < 0)
+            return B;
+        if (strcmp (A -> ID, B -> ID) > 0)
+            return A;
+        else if (strcmp (A -> ID, B -> ID) < 0)
+            return B;
+    }
 }
+
