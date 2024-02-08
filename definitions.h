@@ -11,6 +11,7 @@ struct stu
 };
 typedef struct stu Stu;
 
+extern int state;
 extern Stu * first;
 extern Stu * head;
 extern int cnt;
