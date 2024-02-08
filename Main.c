@@ -32,25 +32,11 @@ void displayAll ();
 void addressing ();
 void update ();
 
-int main()
+void Main()
 {
-    bool firstOne = 0;
-    while (true)
-    {
-    
-    // Testing
-    printf ("Enter:\n");
-    printf ("1 -> read the file\n");
-    printf ("2 -> search the file\n");
-    printf ("3 -> add a student\n");
-    printf ("4 -> remove a student\n");
-    printf ("5 -> shuffle the list\n");
-    printf ("6 -> sort the list\n");
-    printf ("7 -> write the file\n");
-    printf ("8 -> exit the program\n");
-    scanf ("%d", &choice);
+    //bool firstOne = 0;
 
-    if (choice == 1)
+    if (state == 0)
     {
         /*if (!firstOne)
         {
@@ -68,9 +54,10 @@ int main()
             firstOne = 1;
         }*/
         fileRead ();
+        printf ("File read.\n");
     }
 
-    if (choice == 2)
+    if (state == 1)
     {
         printf ("What do you want to search?\n");
         printf ("Name -> 1\n");
@@ -84,7 +71,7 @@ int main()
         searchStu (mode, toBeSearched);
     }
 
-    if (choice == 3)
+    if (state == 2)
     {
         printf ("enter the row to add: ");
         int row;
@@ -103,7 +90,7 @@ int main()
         displayAll();
     }
 
-    if (choice == 4)
+    if (state == 3)
     {
         printf ("What do you want to remove?\n");
         printf ("Name -> 1\n");
@@ -116,29 +103,47 @@ int main()
         scanf ("%s", str);
         printf ("All students with %s in their information will be deleted.\n", str);
         Stu * current = first;
+        int newCnt = cnt;
         for (int i = 0; i < cnt; i++)
         {
             if (mode == 1 && !strcmp (current -> name, str))
+            {
+                newCnt--;
                 removeStu (current);
+            }
             if (mode == 2 && !strcmp (current -> lastName, str))
+            {
+                newCnt--;
                 removeStu (current);
+            }
             if (mode == 3 && !strcmp (current -> ID, str))
+            {
+                newCnt--;
                 removeStu (current);
+            }
             if (mode == 4 && !strcmp (current -> city, str))
+            {
+                newCnt--;
                 removeStu (current);
+            }
             current = current -> next;
         }
+        cnt = newCnt;
+        current = first;
+        for (int i = 0; i < cnt - 1; i++)
+            current = current -> next;
+        head = current;
 
         displayAll();
     }
     
-    if (choice == 5)
+    if (state == 4)
     {
         shuffle();
         displayAll();
     }
 
-    if (choice == 6)
+    if (state == 5)
     {
         int mode;
         printf ("Which algorithm?\n");
@@ -171,7 +176,7 @@ int main()
         printf ("I took %lf seconds to sort.\n", takenTime);
     }
 
-    if (choice == 7)
+    if (state == 6)
     {
         fileWrite ();
         FILE * fptr = fopen ("data.txt", "r");
@@ -182,13 +187,13 @@ int main()
             fgets (str, 1000, fptr);
             fwrite (str, 1, 1000, bptr);
         }
+        printf ("File updated.\n");
     }
 
-    if (choice == 8)
+    if (state == 7)
         progEnd();
 
-    }
-    return 0;
+    return;
 }
 
 void display (Stu * stu)
