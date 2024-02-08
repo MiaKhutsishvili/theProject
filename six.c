@@ -45,31 +45,29 @@ void bubbleSort (int mode)
 
 void quickSort (int mode, int start, int end)
 {
-    if (end - start < 1)
+    if (end <= start)
         return;
     Stu * pivot = address[end];
     int left = start; 
     int right = end - 1;
-    while (left != right)
+    while (left <= right)
     {
-        while (compare (address[left], pivot, mode) != pivot && left < right)
+        while (left <= right && compare (address[left], pivot, mode) != pivot)
             left++;
-        while (compare (address[left], pivot, mode) == pivot && right > left)
+        while (right >= left && compare (address[left], pivot, mode) == pivot)
             right--;
-        Stu * stu = address[left];
-        address[left] = address[right];
-        address[right] = stu; 
+        if (left < right)
+        {
+            Stu * stu = address[left];
+            address[left] = address[right];
+            address[right] = stu; 
+        }
     }
-    int mid = end;
-    while (mid > start && compare (address[mid], address[mid - 1], mode) == address[mid])
-    {
-        pivot = address[mid];
-        address[mid] = address[mid - 1];
-        address[mid - 1] = pivot; 
-        mid--;
-    }   
-    quickSort (mode, start, mid - 1);
-    quickSort (mode, mid + 1, end);
+    Stu * stu = address[left];
+    address[left] = pivot;
+    address[end] = stu;
+    quickSort (mode, start, left - 1);
+    quickSort (mode, left + 1, end);
     return;
 }
 
@@ -107,5 +105,5 @@ Stu * compare (Stu * A, Stu * B, int mode)
         else if (strcmp (A -> ID, B -> ID) < 0)
             return B;
     }
+    return NULL;
 }
-
